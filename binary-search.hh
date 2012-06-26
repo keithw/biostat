@@ -14,8 +14,4 @@ real param_binary_search( Interval search_space,
 			  const real goal,
 			  const bool slope );
 
-real slow_search( Interval search_space,
-		  std::function<real (const real)> func,
-		  const real goal );
-
 #endif

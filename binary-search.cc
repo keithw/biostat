@@ -37,32 +37,3 @@ real param_binary_search( Interval search_space,
     }
   }
 }
-
-real slow_search( Interval search_space,
-		  std::function<real (const real)> func,
-		  const real goal )
-{
-  real val = search_space.lower;
-  double incr = (search_space.upper - search_space.lower) * .0000001;
-
-  bool sign = (func( val ) > goal);
-
-  fprintf( stderr, "Searching [%f, %f]\n", search_space.lower, search_space.upper );
-
-  while ( val < search_space.upper - incr ) {
-    val += incr;
-
-    if ( (func( val ) > goal) != sign ) {
-      fprintf( stderr, "Found inversion between %f (%f) and %f (%f)\n", val - incr, func( val - incr ), val, func( val ) );
-
-      if ( sign ) {
-	return val - incr;
-      } else {
-	return val;
-      }
-    }
-  }
-
-  fprintf( stderr, "REACHED END!\n" );
-  return search_space.upper;
-}

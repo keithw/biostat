@@ -12,6 +12,7 @@ BlythStillCasella<UnrefinedProcedure>::BlythStillCasella( const unsigned int s_N
     lower_limits( _N + 1 ),
     upper_limits( _N + 1 )
 {
+  fprintf( stderr, "Collecting..." );
   /* collect underlying intervals */
   UnrefinedProcedure unref( _N, _alpha );
 
@@ -21,6 +22,7 @@ BlythStillCasella<UnrefinedProcedure>::BlythStillCasella( const unsigned int s_N
     lower_limits[ i ] = x.lower;
     upper_limits[ i ] = x.upper;
   }
+  fprintf( stderr, "done.\n" );
 
   /* verify univariance */
   for ( unsigned int i = 0; i <= _N; i++ ) {
