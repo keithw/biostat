@@ -17,18 +17,18 @@ real Interval::width( void ) const
 }
 
 /* log factorial */
-real factln( const int N )
+real factln( const unsigned int N )
 {
-  return lgammal( real(N) + 1.0 );
+  return realgammaln( real(N) + 1.0 );
 }
 
 /* log binomial coefficient (N choose k) */
-real bicoln( const int N, const int k )
+real bicoln( const unsigned int N, const unsigned int k )
 {
   return factln( N ) - factln( k ) - factln( N - k );
 }
 
 /* log prob that N draws from a binomial RV with prob p gives k successes */
-real likeln( const int N, const int k, const real p ) {
-  return bicoln( N, k ) + k * logl( p ) + (N - k) * logl( 1 - p );
+real likeln( const unsigned int N, const unsigned int k, const real p ) {
+  return bicoln( N, k ) + k * reallog( p ) + (N - k) * reallog( 1 - p );
 }

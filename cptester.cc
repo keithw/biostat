@@ -8,5 +8,7 @@ int main( void )
 
   Interval lim = cp.limits( 19 );
 
-  printf( "[%Lf %Lf]\n", lim.lower, lim.upper );
+  printf( "          [%f %f]\n", lim.lower, lim.upper );
+
+  printf( "StatXact: [0.005369 0.01382]\n" );
 }

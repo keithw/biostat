@@ -6,15 +6,15 @@
 class ClopperPearson
 {
 private:
-  const int _N;
+  const unsigned int _N;
   const real _alpha;
 
 public:
   /* N draws, with confidence parameter alpha */
-  ClopperPearson( const int s_N, const real s_alpha );
+  ClopperPearson( const unsigned int s_N, const real s_alpha );
 
   /* Confidence interval when N draws give k successes */
-  Interval limits( const int k );
+  Interval limits( const unsigned int k );
 };
 
 #endif
