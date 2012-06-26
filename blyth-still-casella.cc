@@ -12,7 +12,6 @@ BlythStillCasella<UnrefinedProcedure>::BlythStillCasella( const unsigned int s_N
     lower_limits( _N + 1 ),
     upper_limits( _N + 1 )
 {
-  fprintf( stderr, "Collecting..." );
   /* collect underlying intervals */
   UnrefinedProcedure unref( _N, _alpha );
 
@@ -22,7 +21,6 @@ BlythStillCasella<UnrefinedProcedure>::BlythStillCasella( const unsigned int s_N
     lower_limits[ i ] = x.lower;
     upper_limits[ i ] = x.upper;
   }
-  fprintf( stderr, "done.\n" );
 
   /* verify univariance */
   for ( unsigned int i = 0; i <= _N; i++ ) {
@@ -31,15 +29,6 @@ BlythStillCasella<UnrefinedProcedure>::BlythStillCasella( const unsigned int s_N
 
   /* refine intervals */
   for ( unsigned int k = _N; k >= 1; k-- ) {
-    /*
-    fprintf( stderr, "[l_%d, u_%d] = [%f, %f]\n",
-	     k, k,
-	     lower_limits[ k ],
-	     upper_limits[ k ] );
-    fprintf( stderr, "Coverage prob(p = %f) = %f\n",
-	     lower_limits[ k ],
-	     coverage_probability( lower_limits[ k ] ) );
-    */
     auto binding_upper_limit_it = upper_bound( upper_limits.begin(),
 					       upper_limits.end(),
 					       lower_limits[ k ] );
@@ -47,11 +36,6 @@ BlythStillCasella<UnrefinedProcedure>::BlythStillCasella( const unsigned int s_N
     real binding_upper_limit = *binding_upper_limit_it;
 
     while ( 1 ) {
-      /*
-      fprintf( stderr, "binding upper limit = %f (#%ld)\n", binding_upper_limit,
-	       binding_upper_limit_it - upper_limits.begin() );
-      */
-
       real orig_value = lower_limits[ k ];
       param_binary_search( Interval( 0,
 				     binding_upper_limit - orig_value ),
@@ -63,17 +47,6 @@ BlythStillCasella<UnrefinedProcedure>::BlythStillCasella( const unsigned int s_N
 			   },
 			   1 - _alpha,
 			   false );
-
-      /*
-      fprintf( stderr, "[l_%d, u_%d] = [%f, %f]\n",
-	       k, k,
-	       lower_limits[ k ],
-	       upper_limits[ k ] );
-      fprintf( stderr, "Coverage prob(p = %f) = %.40f\n",
-	       lower_limits[ k ],
-	       coverage_probability( lower_limits[ k ] ) );
-      */
-
     assert( lower_limits[ k ] <= binding_upper_limit );
 
     if ( lower_limits[ k ] >= binding_upper_limit - 2 * CONVERGENCE_GOAL ) {
@@ -100,8 +73,6 @@ BlythStillCasella<UnrefinedProcedure>::BlythStillCasella( const unsigned int s_N
 
     assert ( this->coverage_probability( lower_limits[ k ] + 5 * CONVERGENCE_GOAL ) >= 1 - _alpha - 5 * CONVERGENCE_GOAL );
     assert ( this->coverage_probability( lower_limits[ k ] - 5 * CONVERGENCE_GOAL ) >= 1 - _alpha - 5 * CONVERGENCE_GOAL );
-
-    //    fprintf( stderr, "\n\n" );
   }
 
   /* verify univariance */
@@ -122,12 +93,3 @@ real BlythStillCasella<UnrefinedProcedure>::coverage_probability( const real p )
   }
   return sum;
 }
-
-/*
-void BlythStillCasella<UnrefinedProcedure>::rationalize_equivariance( void )
-{
-  for ( unsigned int i = 0; i <= _N; i++ ) {
-    stored_limits[ _N - i ].upper = 1 - stored_limits[ i ].lower;
-  }
-}
-*/

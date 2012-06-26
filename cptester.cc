@@ -10,5 +10,5 @@ int main( void )
 
   printf( "          [%f %f]\n", lim.lower, lim.upper );
 
-  printf( "StatXact: [0.005369 0.01382]\n" );
+  printf( "StatXact: [0.005369 0.01387]\n" );
 }
