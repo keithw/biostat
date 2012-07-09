@@ -8,7 +8,7 @@
 void BlythStillCasella::verify_univariance( void ) const
 {
   for ( unsigned int i = 0; i <= _N; i++ ) {
-    assert( realabs( upper_limits[ _N - i ] - (1 - lower_limits[ i ]) ) < 10 * CONVERGENCE_GOAL );
+    assert( realabs( upper_limits[ _N - i ] - (1 - lower_limits[ i ]) ) < 100 * CONVERGENCE_GOAL );
   }
 }
 

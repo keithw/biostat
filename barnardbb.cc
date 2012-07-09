@@ -60,6 +60,14 @@ Barnard::Barnard( const unsigned int s_M,
 
 real Barnard::p_value( const unsigned int i, const unsigned int j ) const
 {
+  if ( i == 0 && j == 0 ) {
+    return 1.0;
+  }
+
+  if ( i == _M && j == _N ) {
+    return 1.0;
+  }
+
   /* count more extreme possible outcomes */
   auto set = upper_bound( outcomes.begin(), outcomes.end(),
 			  PossibleOutcome( i, j, _M, _N ) );
@@ -80,7 +88,7 @@ real Barnard::p_value( const unsigned int i, const unsigned int j ) const
     }
   }
 
-  return ret;
+  return std::min( 1.0, ret + _gamma );
 }
 
 real Barnard::particular_p_value( const unsigned int count, const real pi ) const
