@@ -12,6 +12,7 @@ typedef double real;
 #define realexp exp
 #define realpow pow
 #define realabs fabs
+#define realsqrt sqrt
 
 class Interval
 {
