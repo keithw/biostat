@@ -6,7 +6,7 @@ int main( void )
 {
   ClopperPearson cp( 2134, 0.05 );
 
-  Interval lim = cp.limits( 19 );
+  Interval lim = cp.limits().limits[ 19 ];
 
   printf( "          [%f %f]\n", lim.lower, lim.upper );
 

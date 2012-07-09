@@ -5,29 +5,14 @@
 #include "blyth-still-casella.hh"
 #include "binary-search.hh"
 
-template <class UnrefinedProcedure>
-BlythStillCasella<UnrefinedProcedure>::BlythStillCasella( const unsigned int s_N, const real s_alpha )
-  : _N( s_N ),
-    _alpha( s_alpha ),
-    lower_limits( _N + 1 ),
-    upper_limits( _N + 1 )
+void BlythStillCasella::verify_univariance( void ) const
 {
-  /* collect underlying intervals */
-  UnrefinedProcedure unref( _N, _alpha );
-
-  for ( unsigned int i = 0; i <= _N; i++ ) {
-    const Interval x( unref.limits( i ) );
-
-    lower_limits[ i ] = x.lower;
-    upper_limits[ i ] = x.upper;
-  }
-
-  /* verify univariance */
   for ( unsigned int i = 0; i <= _N; i++ ) {
     assert( realabs( upper_limits[ _N - i ] - (1 - lower_limits[ i ]) ) < 2 * CONVERGENCE_GOAL );
   }
+}
 
-  /* refine intervals */
+void BlythStillCasella::refine_intervals( void ) {
   for ( unsigned int k = _N; k >= 1; k-- ) {
     auto binding_upper_limit_it = upper_bound( upper_limits.begin(),
 					       upper_limits.end(),
@@ -74,22 +59,43 @@ BlythStillCasella<UnrefinedProcedure>::BlythStillCasella( const unsigned int s_N
     assert ( this->coverage_probability( lower_limits[ k ] + 5 * CONVERGENCE_GOAL ) >= 1 - _alpha - 5 * CONVERGENCE_GOAL );
     assert ( this->coverage_probability( lower_limits[ k ] - 5 * CONVERGENCE_GOAL ) >= 1 - _alpha - 5 * CONVERGENCE_GOAL );
   }
-
-  /* verify univariance */
-  for ( unsigned int i = 0; i <= _N; i++ ) {
-    assert( realabs( upper_limits[ _N - i ] - (1 - lower_limits[ i ]) ) < 2 * CONVERGENCE_GOAL );
-  }
 }
 
-template <class UnrefinedProcedure>
-real BlythStillCasella<UnrefinedProcedure>::coverage_probability( const real p ) const
+BlythStillCasella::BlythStillCasella( const IntervalCollection & unrefined_interval )
+  : _N( unrefined_interval.N() ),
+    _alpha( unrefined_interval.alpha() ),
+    lower_limits( _N + 1 ),
+    upper_limits( _N + 1 )
+{
+  /* collect underlying intervals */
+  for ( unsigned int i = 0; i <= _N; i++ ) {
+    const Interval x( unrefined_interval.limits[ i ] );
+
+    lower_limits[ i ] = x.lower;
+    upper_limits[ i ] = x.upper;
+  }
+
+  verify_univariance();
+  refine_intervals();
+  verify_univariance();
+}
+
+real BlythStillCasella::coverage_probability( const real p ) const
 {
   real sum = 0;
   for ( unsigned int x = 0; x <= _N; x++ ) {
-    const Interval lim( limits( x ) );
-    if ( (lim.lower < p) && (p < lim.upper) ) {
+    if ( (lower_limits[ x ] < p) && (p < upper_limits[ x ]) ) {
       sum += exp( likeln( _N, x, p ) );
     }
   }
   return sum;
+}
+
+const IntervalCollection BlythStillCasella::limits( void ) const
+{
+  IntervalCollection ret( _N, _alpha );
+  for ( unsigned int i = 0; i <= _N; i++ ) {
+    ret.limits[ i ] = limits( i );
+  }
+  return ret;
 }

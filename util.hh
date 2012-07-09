@@ -2,6 +2,7 @@
 #define UTIL_HH
 
 #include <math.h>
+#include <vector>
 
 typedef double real;
 
@@ -22,6 +23,25 @@ public:
 
   real middle( void ) const;
   real width( void ) const;
+};
+
+class IntervalCollection
+{
+private:
+  const unsigned int _N;
+  const real _alpha;
+
+public:
+  std::vector<Interval> limits;
+
+  IntervalCollection( const unsigned int s_N, const real s_alpha )
+    : _N( s_N ),
+      _alpha( s_alpha ),
+      limits( _N + 1, Interval( 0, 1 ) )
+  {}
+
+  unsigned int N( void ) const { return _N; }
+  real alpha( void ) const { return _alpha; }
 };
 
 /* factorial */

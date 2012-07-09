@@ -5,7 +5,6 @@
 
 #include "util.hh"
 
-template <class UnrefinedProcedure>
 class BlythStillCasella
 {
  private:
@@ -16,11 +15,16 @@ class BlythStillCasella
 
   real coverage_probability( const real p ) const;
 
+  void verify_univariance( void ) const;
+  void refine_intervals( void );
+
  public:
-  BlythStillCasella( const unsigned int s_N, const real s_alpha );
+  BlythStillCasella( const IntervalCollection & unrefined_interval );
 
   Interval limits( const unsigned int k ) const { return Interval( lower_limits[ k ],
 								   upper_limits[ k ] ); }
+
+  const IntervalCollection limits( void ) const;
 };
 
 #endif
