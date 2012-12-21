@@ -3,7 +3,7 @@ objects = util.o binary-search.o clopper-pearson.o blyth-still-casella.o coverag
 executables = cptester bsctester bbbtester
 
 CXX = g++
-CXXFLAGS = -g -O3 -std=c++0x -ffast-math -pedantic -Werror -Wall -Wextra -Weffc++ -fno-default-inline -pipe -D_FILE_OFFSET_BITS=64 -D_XOPEN_SOURCE=500 -D_GNU_SOURCE
+CXXFLAGS = -g -O3 -std=c++0x -pedantic -Werror -Wall -Wextra -Weffc++ -fno-default-inline -pipe
 LIBS = -lm
 
 all: $(executables)
