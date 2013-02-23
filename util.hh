@@ -6,7 +6,6 @@
 
 typedef double real;
 
-#define realgamma tgamma
 #define realgammaln lgamma
 #define reallog log
 #define realexp exp

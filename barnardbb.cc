@@ -41,10 +41,9 @@ real Barnard::PossibleOutcome::likeln( const real p ) const
 
 Barnard::Barnard( const unsigned int s_M,
 		  const unsigned int s_N,
-		  const real s_alpha,
 		  const real s_gamma )
   : _M( s_M ), _N( s_N ),
-    _alpha( s_alpha ), _gamma( s_gamma ),
+    _gamma( s_gamma ),
     M_search( BlythStillCasella( ClopperPearson( s_M, _gamma / 2.0 ).limits() ).limits() ),
     N_search( BlythStillCasella( ClopperPearson( s_N, _gamma / 2.0 ).limits() ).limits() ),
     outcomes()

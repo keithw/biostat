@@ -9,7 +9,7 @@ class Barnard
 {
 private:
   const unsigned int _M, _N;
-  const real _alpha, _gamma;
+  const real _gamma;
 
   real particular_p_value( const unsigned int count, const real pi ) const;
 
@@ -40,7 +40,6 @@ private:
 public:
   Barnard( const unsigned int s_M,
 	   const unsigned int s_N,
-	   const real s_alpha,
 	   const real s_gamma );
 
   real p_value( const unsigned int i, const unsigned int j ) const;
