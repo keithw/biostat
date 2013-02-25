@@ -80,7 +80,7 @@ real Barnard::p_value( const unsigned int i, const unsigned int j ) const
 		   std::min( limits1.upper, limits2.upper ) );
 
   real ret = 0;
-  for ( real p = search.lower; p < search.upper; p += search.width() / 1000.0 ) {
+  for ( real p = search.lower; p <= search.upper; p += search.width() / 1000.0 ) {
     real new_p = particular_p_value( count, p );
     if ( new_p > ret ) {
       ret = new_p;

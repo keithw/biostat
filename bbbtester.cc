@@ -6,9 +6,9 @@
 
 int main( void )
 {
-  Barnard bbb( 1000, 1000, 1e-06 );
+  Barnard bbb( 100, 100, 1e-06 );
 
-  printf( "p = %.20f\n", bbb.p_value( 400, 450 ) );
+  printf( "p = %.20f\n", bbb.p_value( 40, 60 ) );
 
   return 0;
 }
