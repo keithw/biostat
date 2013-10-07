@@ -29,14 +29,14 @@ Barnard::PossibleOutcome::PossibleOutcome( const unsigned int s_i,
   real denom3 = 1.0 / real( M ) + 1.0 / real( N );
 
   real numer = pi2hat - pi1hat;
-  real denom = realsqrt( denom1 * denom2 * denom3 );
+  real denom = std::sqrt( denom1 * denom2 * denom3 );
 
-  d = realabs( numer / denom );
+  d = std::abs( numer / denom );
 }
 
 real Barnard::PossibleOutcome::likeln( const real p ) const
 {
-  return bicoln_cache + (i + j) * reallog( p ) + ( (M - i) + (N - j) ) * reallog( 1 - p );
+  return bicoln_cache + (i + j) * std::log( p ) + ( (M - i) + (N - j) ) * std::log( 1 - p );
 }
 
 Barnard::Barnard( const unsigned int s_M,
@@ -95,7 +95,7 @@ real Barnard::particular_p_value( const unsigned int count, const real pi ) cons
   real ret = 0;
 
   for ( unsigned int x = 0; x < count; x++ ) {
-    ret += realexp( outcomes[ x ].likeln( pi ) );
+    ret += std::exp( outcomes[ x ].likeln( pi ) );
   }
 
   return ret;

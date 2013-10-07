@@ -1,17 +1,9 @@
 #ifndef UTIL_HH
 #define UTIL_HH
 
-#include <math.h>
 #include <vector>
 
 typedef double real;
-
-#define realgammaln lgamma
-#define reallog log
-#define realexp exp
-#define realpow pow
-#define realabs fabs
-#define realsqrt sqrt
 
 class Interval
 {

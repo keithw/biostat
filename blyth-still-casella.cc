@@ -1,6 +1,5 @@
-#include <stdio.h>
 #include <algorithm>
-#include <assert.h>
+#include <cassert>
 
 #include "blyth-still-casella.hh"
 #include "binary-search.hh"
@@ -8,7 +7,7 @@
 void BlythStillCasella::verify_univariance( void ) const
 {
   for ( unsigned int i = 0; i <= _N; i++ ) {
-    assert( realabs( upper_limits[ _N - i ] - (1 - lower_limits[ i ]) ) < 100 * CONVERGENCE_GOAL );
+    assert( abs( upper_limits[ _N - i ] - (1 - lower_limits[ i ]) ) < 100 * CONVERGENCE_GOAL );
   }
 }
 

@@ -54,17 +54,21 @@ int main( int argc, char *argv[] )
   const double confidence = myatof( argv[ 3 ] );
 
   assert( num_total > 0 );
-  assert( num_successes > 0 );
+  //  assert( num_successes >= 0 );
   assert( num_successes <= num_total );
   assert( confidence >= 0.0 );
   assert( confidence < 1.0 );
 
-  BlythStillCasella bsc( ClopperPearson( num_total, 1 - confidence ).limits() );
+  ClopperPearson cp( num_total, 1 - confidence );
+  BlythStillCasella bsc( cp.limits() );
   Interval lim = bsc.limits( num_successes );
+  Interval cplim = cp.limits().limits[ num_successes ];
 
   printf( "Observed %u successes in %u trials.\n", num_successes, num_total );
   printf( "Blyth-Still-Casella %.0f%% confidence interval: [%.8f %.8f]\n",
 	  100 * confidence, lim.lower, lim.upper );
+  printf( "Clopper-Pearson: %.0f%% confidence interval: [%.8f %.8f]\n",
+	  100 * confidence, cplim.lower, cplim.upper );
 
   return 0;
 }

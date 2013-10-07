@@ -1,3 +1,5 @@
+#include <boost/math/special_functions/gamma.hpp>
+
 #include "util.hh"
 
 Interval::Interval( const real s_lower, const real s_upper )
@@ -19,7 +21,7 @@ real Interval::width( void ) const
 /* log factorial */
 real factln( const unsigned int N )
 {
-  return realgammaln( real(N) + 1.0 );
+  return boost::math::lgamma( real(N) + 1.0 );
 }
 
 /* log binomial coefficient (N choose k) */
@@ -30,5 +32,5 @@ real bicoln( const unsigned int N, const unsigned int k )
 
 /* log prob that N draws from a binomial RV with prob p gives k successes */
 real likeln( const unsigned int N, const unsigned int k, const real p ) {
-  return bicoln( N, k ) + k * reallog( p ) + (N - k) * reallog( 1 - p );
+  return bicoln( N, k ) + k * std::log( p ) + (N - k) * std::log( 1 - p );
 }
