@@ -46,16 +46,16 @@ real bicoln( const unsigned int N, const unsigned int k );
 real likeln( const unsigned int N, const unsigned int k, const real p );
 
 /* cached version */
-class LikelnCache
+class LikeCache
 {
 private:
   const unsigned int _p_slots;
   std::vector< std::vector< real > > _cache;
 
 public:
-  LikelnCache( const unsigned int N, const unsigned int s_slots );
+  LikeCache( const unsigned int N, const unsigned int s_slots );
 
-  real likeln( const int i, const real p ) const { return _cache.at( i ).at( p * _p_slots ); }
+  real like( const int i, const real p ) const { return _cache.at( i ).at( p * _p_slots ); }
 };
 
 #endif

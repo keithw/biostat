@@ -36,13 +36,13 @@ real likeln( const unsigned int N, const unsigned int k, const real p ) {
 }
 
 /* cached version */
-LikelnCache::LikelnCache( const unsigned int N, const unsigned int s_slots )
+LikeCache::LikeCache( const unsigned int N, const unsigned int s_slots )
   : _p_slots( s_slots ),
     _cache( N + 1, std::vector< real >( _p_slots + 1 ) )
 {
   for ( unsigned int i = 0; i <= N; i++ ) {
     for ( unsigned int pslot = 0; pslot <= _p_slots; pslot++ ) {
-      _cache.at( i ).at( pslot ) = ::likeln( N, i, real( pslot ) / real( _p_slots ) );
+      _cache.at( i ).at( pslot ) = std::exp( ::likeln( N, i, real( pslot ) / real( _p_slots ) ) );
     }
   }
 }

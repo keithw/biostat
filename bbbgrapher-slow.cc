@@ -4,7 +4,7 @@
 
 #include "barnardbb.hh"
 
-const unsigned int N = 1000, M = 700;
+const unsigned int N = 700, M = 500;
 const real alpha = 0.05;
 const unsigned int p_quantizer_steps = 1000;
 const real berger_boos_gamma = 1e-06;
@@ -26,7 +26,7 @@ int main( void )
 
   cerr << "done." << endl << "Calculating binomial coefficient caches... ";
 
-  LikelnCache icache( N, p_quantizer_steps ), jcache( M, p_quantizer_steps );
+  LikeCache icache( N, p_quantizer_steps ), jcache( M, p_quantizer_steps );
 
   cerr << "done." << endl << "Printing curve of false positive probabilities... ";
 
@@ -35,11 +35,11 @@ int main( void )
     real false_positive_probability = 0.0;
 
     for ( unsigned int i = 0; i <= N; i++ ) {
-      const real ln_prob_of_i = icache.likeln( i, p );
+      const real prob_of_i = icache.like( i, p );
       for ( unsigned int j = 0; j <= M; j++ ) {
-	const real ln_prob_of_j = jcache.likeln( j, p );
 	if ( test_result.at( i ).at( j ) ) {
-	  false_positive_probability += exp( ln_prob_of_i + ln_prob_of_j );
+	  const real prob_of_j = jcache.like( j, p );
+	  false_positive_probability += prob_of_i * prob_of_j;
 	}
       }
     }
