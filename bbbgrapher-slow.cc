@@ -4,7 +4,7 @@
 
 #include "barnardbb.hh"
 
-const unsigned int N = 10, M = 20;
+const unsigned int N = 20, M = 15;
 const real alpha = 0.05;
 
 using namespace std;
@@ -20,7 +20,7 @@ int main( void )
     }
   }
 
-  for ( double p = 0.0; p <= 1.0; p += 0.1 ) {
+  for ( double p = 0.0; p <= 1.0; p += 0.001 ) {
     real false_positive_probability = 0.0;
 
     for ( unsigned int i = 0; i <= N; i++ ) {
