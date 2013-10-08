@@ -45,4 +45,17 @@ real bicoln( const unsigned int N, const unsigned int k );
 /* prob that N draws from a binomial RV with prob p gives k successes */
 real likeln( const unsigned int N, const unsigned int k, const real p );
 
+/* cached version */
+class LikelnCache
+{
+private:
+  const unsigned int _p_slots;
+  std::vector< std::vector< real > > _cache;
+
+public:
+  LikelnCache( const unsigned int N, const unsigned int s_slots );
+
+  real likeln( const int i, const real p ) const { return _cache.at( i ).at( p * _p_slots ); }
+};
+
 #endif

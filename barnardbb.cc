@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <iostream>
 
 #include "barnardbb.hh"
 #include "clopper-pearson.hh"
