@@ -11,7 +11,7 @@ using namespace std;
 
 int main( void )
 {
-  Barnard bbb( N, M, 1e-06 );
+  BarnardFast bbb( N, M, 1e-06, 1000 );
   std::array< std::array< bool, M + 1 >, N + 1 > test_result;
 
   for ( unsigned int i = 0; i <= N; i++ ) {

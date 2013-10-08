@@ -7,11 +7,13 @@
 
 class Barnard
 {
-private:
+protected:
   const unsigned int _M, _N;
+
+private:
   const real _gamma;
 
-  real particular_p_value( const unsigned int count, const real pi ) const;
+  virtual real particular_p_value( const unsigned int count, const real pi ) const;
 
   const IntervalCollection M_search, N_search;
 
@@ -35,6 +37,7 @@ private:
     bool operator<( const PossibleOutcome &other ) const { return d > other.d; }
   };
 
+protected:
   std::vector< PossibleOutcome > outcomes;
 
 public:
@@ -43,6 +46,26 @@ public:
 	   const real s_gamma );
 
   real p_value( const unsigned int i, const unsigned int j ) const;
+
+  virtual ~Barnard() {}
+};
+
+class BarnardFast : public Barnard
+{
+private:
+  const unsigned int _p_slots;
+  std::vector< std::vector< real > > _ppv_cache;
+
+public:
+  BarnardFast( const unsigned int s_M,
+	       const unsigned int s_N,
+	       const real s_gamma,
+	       const real s_slots );
+
+  real particular_p_value( const unsigned int count, const real pi ) const
+  {
+    return _ppv_cache[ count ][ pi * _p_slots ];
+  }
 };
 
 #endif
