@@ -40,22 +40,12 @@ public:
 real factln( const unsigned int N );
 
 /* binomial coefficient (N choose k) */
-real bicoln( const unsigned int N, const unsigned int k );
+real bicoln_raw( const unsigned int N, const unsigned int k );
 
 /* prob that N draws from a binomial RV with prob p gives k successes */
 real likeln( const unsigned int N, const unsigned int k, const real p );
 
-/* cached version */
-class LikeCache
-{
-private:
-  const unsigned int _p_slots;
-  std::vector< std::vector< real > > _cache;
-
-public:
-  LikeCache( const unsigned int N, const unsigned int s_slots );
-
-  real like( const int i, const real p ) const { return _cache.at( i ).at( p * _p_slots ); }
-};
+/* memoized version */
+real bicoln( const unsigned int N, const unsigned int k );
 
 #endif

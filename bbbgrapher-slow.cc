@@ -30,10 +30,6 @@ int main( int argc, char *argv[] )
     }
   }
 
-  cerr << "done." << endl << "Calculating binomial coefficient caches... ";
-
-  LikeCache icache( N, p_quantizer_steps ), jcache( M, p_quantizer_steps );
-
   cerr << "done." << endl << "Printing curve of false positive probabilities... ";
 
   for ( unsigned int pint = 1; pint < p_quantizer_steps; pint++ ) {
@@ -41,10 +37,10 @@ int main( int argc, char *argv[] )
     real false_positive_probability = 0.0;
 
     for ( unsigned int i = 0; i <= N; i++ ) {
-      const real prob_of_i = icache.like( i, p );
+      const real prob_of_i = likeln( N, i, p );
       for ( unsigned int j = 0; j <= M; j++ ) {
 	if ( test_result.at( i ).at( j ) ) {
-	  const real prob_of_j = jcache.like( j, p );
+	  const real prob_of_j = likeln( M, j, p );
 	  false_positive_probability += prob_of_i * prob_of_j;
 	}
       }

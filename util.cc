@@ -1,4 +1,5 @@
 #include <boost/math/special_functions/gamma.hpp>
+#include <vector>
 
 #include "util.hh"
 
@@ -25,24 +26,33 @@ real factln( const unsigned int N )
 }
 
 /* log binomial coefficient (N choose k) */
-real bicoln( const unsigned int N, const unsigned int k )
+real bicoln_raw( const unsigned int N, const unsigned int k )
 {
   return factln( N ) - factln( k ) - factln( N - k );
 }
 
 /* log prob that N draws from a binomial RV with prob p gives k successes */
 real likeln( const unsigned int N, const unsigned int k, const real p ) {
-  return bicoln( N, k ) + k * std::log( p ) + (N - k) * std::log( 1 - p );
+  return bicoln( N, k ) + k * log( p ) + (N - k) * log( 1 - p );
 }
 
-/* cached version */
-LikeCache::LikeCache( const unsigned int N, const unsigned int s_slots )
-  : _p_slots( s_slots ),
-    _cache( N + 1, std::vector< real >( _p_slots + 1 ) )
+/* memoized version */
+real bicoln( const unsigned int N, const unsigned int k )
 {
-  for ( unsigned int i = 0; i <= N; i++ ) {
-    for ( unsigned int pslot = 0; pslot <= _p_slots; pslot++ ) {
-      _cache.at( i ).at( pslot ) = std::exp( ::likeln( N, i, real( pslot ) / real( _p_slots ) ) );
+  static std::vector< std::vector< real > > cache;
+
+  if ( N >= cache.size() ) {
+    unsigned int old_size = cache.size();
+
+    cache.resize( N + 1 );
+
+    for ( unsigned int candidate_N = old_size; candidate_N < cache.size(); candidate_N++ ) {
+      cache.at( candidate_N ).resize( candidate_N + 1 );
+      for ( unsigned int candidate_k = 0; candidate_k <= candidate_N; candidate_k++ ) {
+	cache.at( candidate_N ).at( candidate_k ) = bicoln_raw( candidate_N, candidate_k );
+      }
     }
   }
+
+  return cache.at( N ).at( k );
 }
