@@ -45,7 +45,7 @@ public:
 	   const unsigned int s_N,
 	   const real s_gamma );
 
-  real p_value( const unsigned int i, const unsigned int j ) const;
+  virtual real p_value( const unsigned int i, const unsigned int j, const real p_step ) const;
 
   virtual ~Barnard() {}
 };
@@ -64,7 +64,12 @@ public:
 
   real particular_p_value( const unsigned int count, const real pi ) const
   {
-    return _ppv_cache[ count ][ pi * _p_slots ];
+    return _ppv_cache.at( count ).at( pi * _p_slots );
+  }
+
+  real p_value( const unsigned int i, const unsigned int j ) const
+  {
+    return Barnard::p_value( i, j, 1.0 / _p_slots );
   }
 };
 

@@ -58,7 +58,7 @@ Barnard::Barnard( const unsigned int s_M,
   sort( outcomes.begin(), outcomes.end() );
 }
 
-real Barnard::p_value( const unsigned int i, const unsigned int j ) const
+real Barnard::p_value( const unsigned int i, const unsigned int j, const real p_step ) const
 {
   if ( i == 0 && j == 0 ) {
     return 1.0;
@@ -77,11 +77,11 @@ real Barnard::p_value( const unsigned int i, const unsigned int j ) const
   const Interval & limits1 = M_search.limits[ i ];
   const Interval & limits2 = N_search.limits[ j ];
 
-  Interval search( std::max( limits1.lower, limits2.lower ),
-		   std::min( limits1.upper, limits2.upper ) );
+  Interval search( std::max( 0.0, std::max( limits1.lower, limits2.lower ) - p_step ),
+		   std::min( 1.0, std::min( limits1.upper, limits2.upper ) + p_step ) );
 
   real ret = 0;
-  for ( real p = search.lower; p <= search.upper; p += search.width() / 1000.0 ) {
+  for ( real p = search.lower; p <= search.upper; p += p_step ) {
     ret = std::max( ret, particular_p_value( count, p ) );
   }
 

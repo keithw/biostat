@@ -4,7 +4,6 @@
 
 #include "barnardbb.hh"
 
-//const unsigned int N = 307, M = 180;
 const real alpha = 0.05;
 const unsigned int p_quantizer_steps = 1000;
 const real berger_boos_gamma = 1e-06;
