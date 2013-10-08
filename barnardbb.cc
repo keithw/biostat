@@ -105,7 +105,7 @@ BarnardFast::BarnardFast( const unsigned int s_M,
 			  const real s_slots )
   : Barnard( s_M, s_N, s_gamma ),
     _p_slots( s_slots ),
-    _ppv_cache( (_M + 1) * (_N + 1) + 1, std::vector< real >( _p_slots + 1, -1 ) )
+    _ppv_cache( (_M + 1) * (_N + 1) + 1, std::vector< float >( _p_slots + 1, -1 ) )
 {
   /* make the cache in fast order */
   for ( unsigned int pslot = 0; pslot <= _p_slots; pslot++ ) {

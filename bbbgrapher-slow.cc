@@ -4,19 +4,26 @@
 
 #include "barnardbb.hh"
 
-const unsigned int N = 700, M = 500;
+//const unsigned int N = 307, M = 180;
 const real alpha = 0.05;
 const unsigned int p_quantizer_steps = 1000;
 const real berger_boos_gamma = 1e-06;
 
 using namespace std;
 
-int main( void )
+int main( int argc, char *argv[] )
 {
+  if ( argc < 3 ) {
+    cerr << "Usage: " << argv[ 0 ] << " N M" << endl;
+    return EXIT_FAILURE;
+  }
+
+  const unsigned int N = atoi( argv[ 1 ] ), M = atoi( argv[ 2 ] );
+
   cerr << "Calculating Barnard (Berger-Boos) test for " << N << "x" << M << " outcomes... ";
 
   BarnardFast bbb( N, M, berger_boos_gamma, p_quantizer_steps );
-  array< array< bool, M + 1 >, N + 1 > test_result;
+  vector< vector< bool > > test_result( N + 1, vector< bool >( M + 1 ) );
 
   for ( unsigned int i = 0; i <= N; i++ ) {
     for ( unsigned int j = 0; j <= M; j++ ) {
