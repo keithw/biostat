@@ -8,12 +8,12 @@
 class BlythStillCasella
 {
  private:
-  const unsigned int _N;
-  const real _alpha;
+  const unsigned int N_;
+  const breal alpha_;
 
-  std::vector< real > lower_limits, upper_limits;
+  std::vector< breal > lower_limits, upper_limits;
 
-  real coverage_probability( const real p ) const;
+  breal coverage_probability( const breal p ) const;
 
   void verify_univariance( void ) const;
   void refine_intervals( void );

@@ -6,14 +6,14 @@
 class ClopperPearson
 {
 private:
-  IntervalCollection _limits;
+  IntervalCollection limits_;
 
 public:
   /* N draws, with confidence parameter alpha */
-  ClopperPearson( const unsigned int s_N, const real s_alpha );
+  ClopperPearson( const unsigned int s_N, const breal s_alpha );
 
   /* Confidence interval when N draws give k successes */
-  const IntervalCollection & limits( void ) const { return _limits; }
+  const IntervalCollection & limits( void ) const { return limits_; }
 };
 
 #endif

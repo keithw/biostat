@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <cstdio>
 
 #include "barnardbb.hh"
 #include "blyth-still-casella.hh"

@@ -1,26 +1,25 @@
-#include <stdio.h>
-#include <assert.h>
+#include <iostream>
 
 #include "binary-search.hh"
 
+using namespace std;
+
 /* Find paramater value within search_space s.t. func( param ) is close to goal */
-real param_binary_search( Interval search_space,
-			  std::function<real (const real)> func,
-			  const real goal,
+breal param_binary_search( Interval search_space,
+			  function<breal (const breal)> func,
+			  const breal goal,
 			  const bool slope )
 {
   unsigned int iterations = 0;
 
   while ( 1 ) {
-    real ret = search_space.middle();
+    breal ret = search_space.middle();
 
     if ( search_space.width() < CONVERGENCE_GOAL ) {
       return ret;
     }
 
-    const real val = func( ret );
-
-    //    fprintf( stderr, "BINSRCH: try = %.10f, val = %.10f, goal = %.10f\n", ret, val, goal );
+    const breal val = func( ret );
 
     if ( val > goal ) {
       (slope ? search_space.upper : search_space.lower) = ret;
@@ -32,7 +31,7 @@ real param_binary_search( Interval search_space,
 
     iterations++;
     if ( iterations > ITERATION_LIMIT ) {
-      fprintf( stderr, "Iteration limit %d exceeded.\n", ITERATION_LIMIT );
+      cerr << "Iteration limit exceeded." << endl;
       throw;
     }
   }

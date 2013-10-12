@@ -1,50 +1,14 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <string.h>
-#include <assert.h>
+#include <cstdio>
+#include <cassert>
 
 #include "blyth-still-casella.hh"
 #include "clopper-pearson.hh"
-
-long int myatoi( const char *str )
-{
-  char *end;
-
-  errno = 0;
-  long int ret = strtol( str, &end, 10 );
-
-  if ( ( errno != 0 )
-       || ( end != str + strlen( str ) ) ) {
-    fprintf( stderr, "Bad integer: %s\n", str );
-    exit( 1 );
-  }
-
-  return ret;
-}
-
-double myatof( const char *str )
-{
-  char *end;
-
-  errno = 0;
-  double ret = strtod( str, &end );
-
-  if ( ( errno != 0 )
-       || ( end != str + strlen( str ) ) ) {
-    fprintf( stderr, "Bad floating-point number: %s\n", str );
-    exit( 1 );
-  }
-
-  return ret;
-}
 
 int main( int argc, char *argv[] )
 {
   if ( argc != 4 ) {
     fprintf( stderr,
-	     "Usage: %s NUM_TOTAL NUM_SUCCESSES CONFIDENCE\nExample: %s 40 100 0.95\n",
+	     "Usage: %s NUM_TOTAL NUM_SUCCESSES CONFIDENCE\nExample: %s 100 40 0.95\n",
 	     argv[ 0 ], argv[ 0 ] );
     exit( 1 );
   }
@@ -54,7 +18,6 @@ int main( int argc, char *argv[] )
   const double confidence = myatof( argv[ 3 ] );
 
   assert( num_total > 0 );
-  //  assert( num_successes >= 0 );
   assert( num_successes <= num_total );
   assert( confidence >= 0.0 );
   assert( confidence < 1.0 );

@@ -2,50 +2,55 @@
 #define UTIL_HH
 
 #include <vector>
+#include <string>
 
-typedef double real;
+typedef double breal;
 
 class Interval
 {
 public:
-  real lower;
-  real upper;
+  breal lower;
+  breal upper;
 
-  Interval( const real s_lower, const real s_upper );
+  Interval( const breal s_lower, const breal s_upper );
 
-  real middle( void ) const;
-  real width( void ) const;
+  breal middle( void ) const;
+  breal width( void ) const;
 };
 
 class IntervalCollection
 {
 private:
-  const unsigned int _N;
-  const real _alpha;
+  const unsigned int N_;
+  const breal alpha_;
 
 public:
   std::vector<Interval> limits;
 
-  IntervalCollection( const unsigned int s_N, const real s_alpha )
-    : _N( s_N ),
-      _alpha( s_alpha ),
-      limits( _N + 1, Interval( 0, 1 ) )
+  IntervalCollection( const unsigned int s_N, const breal s_alpha )
+    : N_( s_N ),
+      alpha_( s_alpha ),
+      limits( N_ + 1, Interval( 0, 1 ) )
   {}
 
-  unsigned int N( void ) const { return _N; }
-  real alpha( void ) const { return _alpha; }
+  unsigned int N( void ) const { return N_; }
+  breal alpha( void ) const { return alpha_; }
 };
 
 /* factorial */
-real factln( const unsigned int N );
+breal factln( const unsigned int N );
 
 /* binomial coefficient (N choose k) */
-real bicoln_raw( const unsigned int N, const unsigned int k );
+breal bicoln_raw( const unsigned int N, const unsigned int k );
 
 /* prob that N draws from a binomial RV with prob p gives k successes */
-real likeln( const unsigned int N, const unsigned int k, const real p );
+breal likeln( const unsigned int N, const unsigned int k, const breal p );
 
 /* memoized version */
-real bicoln( const unsigned int N, const unsigned int k );
+breal bicoln( const unsigned int N, const unsigned int k );
+
+/* conversion routines */
+long int myatoi( const std::string & str );
+double myatof( const std::string & str );
 
 #endif

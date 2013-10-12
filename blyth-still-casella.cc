@@ -6,40 +6,40 @@
 
 void BlythStillCasella::verify_univariance( void ) const
 {
-  for ( unsigned int i = 0; i <= _N; i++ ) {
-    assert( abs( upper_limits[ _N - i ] - (1 - lower_limits[ i ]) ) < 100 * CONVERGENCE_GOAL );
+  for ( unsigned int i = 0; i <= N_; i++ ) {
+    assert( abs( upper_limits[ N_ - i ] - (1 - lower_limits[ i ]) ) < 100 * CONVERGENCE_GOAL );
   }
 }
 
 void BlythStillCasella::refine_intervals( void ) {
-  for ( unsigned int k = _N; k >= 1; k-- ) {
+  for ( unsigned int k = N_; k >= 1; k-- ) {
     auto binding_upper_limit_it = upper_bound( upper_limits.begin(),
 					       upper_limits.end(),
 					       lower_limits[ k ] );
     assert ( binding_upper_limit_it != upper_limits.end() );
-    real binding_upper_limit = *binding_upper_limit_it;
+    breal binding_upper_limit = *binding_upper_limit_it;
 
     while ( 1 ) {
-      real orig_value = lower_limits[ k ];
+      breal orig_value = lower_limits[ k ];
       param_binary_search( Interval( 0,
 				     binding_upper_limit - orig_value ),
-			   [&] (const real inc) -> real
+			   [&] ( const breal inc ) -> breal
 			   {
 			     lower_limits[ k ] = orig_value + inc;
-			     upper_limits[ _N - k ] = 1 - lower_limits[ k ];
+			     upper_limits[ N_ - k ] = 1 - lower_limits[ k ];
 			     return this->coverage_probability( lower_limits[ k ] );
 			   },
-			   1 - _alpha,
+			   1 - alpha_,
 			   false );
     assert( lower_limits[ k ] <= binding_upper_limit );
 
     if ( lower_limits[ k ] >= binding_upper_limit - 2 * CONVERGENCE_GOAL ) {
       lower_limits[ k ] = binding_upper_limit;
-      upper_limits[ _N - k ] = 1 - lower_limits[ k ];
+      upper_limits[ N_ - k ] = 1 - lower_limits[ k ];
     }
 
     if ( (lower_limits[ k ] == binding_upper_limit)
-	 && (coverage_probability( lower_limits[ k ] ) >= 1 - _alpha) ) {
+	 && (coverage_probability( lower_limits[ k ] ) >= 1 - alpha_) ) {
 
 	if ( binding_upper_limit_it + 1 == upper_limits.end() ) {
 	  binding_upper_limit = 1.0;
@@ -55,19 +55,19 @@ void BlythStillCasella::refine_intervals( void ) {
       break;
     }
 
-    assert ( this->coverage_probability( lower_limits[ k ] + 5 * CONVERGENCE_GOAL ) >= 1 - _alpha - 5 * CONVERGENCE_GOAL );
-    assert ( this->coverage_probability( lower_limits[ k ] - 5 * CONVERGENCE_GOAL ) >= 1 - _alpha - 5 * CONVERGENCE_GOAL );
+    assert ( this->coverage_probability( lower_limits[ k ] + 5 * CONVERGENCE_GOAL ) >= 1 - alpha_ - 5 * CONVERGENCE_GOAL );
+    assert ( this->coverage_probability( lower_limits[ k ] - 5 * CONVERGENCE_GOAL ) >= 1 - alpha_ - 5 * CONVERGENCE_GOAL );
   }
 }
 
 BlythStillCasella::BlythStillCasella( const IntervalCollection & unrefined_interval )
-  : _N( unrefined_interval.N() ),
-    _alpha( unrefined_interval.alpha() ),
-    lower_limits( _N + 1 ),
-    upper_limits( _N + 1 )
+  : N_( unrefined_interval.N() ),
+    alpha_( unrefined_interval.alpha() ),
+    lower_limits( N_ + 1 ),
+    upper_limits( N_ + 1 )
 {
   /* collect underlying intervals */
-  for ( unsigned int i = 0; i <= _N; i++ ) {
+  for ( unsigned int i = 0; i <= N_; i++ ) {
     const Interval x( unrefined_interval.limits[ i ] );
 
     lower_limits[ i ] = x.lower;
@@ -79,12 +79,12 @@ BlythStillCasella::BlythStillCasella( const IntervalCollection & unrefined_inter
   verify_univariance();
 }
 
-real BlythStillCasella::coverage_probability( const real p ) const
+breal BlythStillCasella::coverage_probability( const breal p ) const
 {
-  real sum = 0;
-  for ( unsigned int x = 0; x <= _N; x++ ) {
+  breal sum = 0;
+  for ( unsigned int x = 0; x <= N_; x++ ) {
     if ( (lower_limits[ x ] < p) && (p < upper_limits[ x ]) ) {
-      sum += exp( likeln( _N, x, p ) );
+      sum += exp( likeln( N_, x, p ) );
     }
   }
   return sum;
@@ -92,8 +92,8 @@ real BlythStillCasella::coverage_probability( const real p ) const
 
 const IntervalCollection BlythStillCasella::limits( void ) const
 {
-  IntervalCollection ret( _N, _alpha );
-  for ( unsigned int i = 0; i <= _N; i++ ) {
+  IntervalCollection ret( N_, alpha_ );
+  for ( unsigned int i = 0; i <= N_; i++ ) {
     ret.limits[ i ] = limits( i );
   }
   return ret;

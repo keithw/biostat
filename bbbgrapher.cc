@@ -4,9 +4,9 @@
 
 #include "barnardbb.hh"
 
-const real alpha = 0.05;
+const breal alpha = 0.05;
 const unsigned int p_quantizer_steps = 1000;
-const real berger_boos_gamma = 1e-06;
+const breal berger_boos_gamma = 1e-06;
 
 using namespace std;
 
@@ -17,7 +17,7 @@ int main( int argc, char *argv[] )
     return EXIT_FAILURE;
   }
 
-  const unsigned int N = atoi( argv[ 1 ] ), M = atoi( argv[ 2 ] );
+  const unsigned int N = myatoi( argv[ 1 ] ), M = myatoi( argv[ 2 ] );
 
   cerr << "Calculating Barnard (Berger-Boos) test for " << N << "x" << M << " outcomes... ";
 
@@ -32,14 +32,14 @@ int main( int argc, char *argv[] )
 
   cerr << "done." << endl << "Printing curve of false positive probabilities... ";
 
-  for ( real p = 0.0; p <= 1.0; p += 1.0 / p_quantizer_steps ) {
-    real false_positive_probability = 0.0;
+  for ( breal p = 0.0; p <= 1.0; p += 1.0 / p_quantizer_steps ) {
+    breal false_positive_probability = 0.0;
 
     for ( unsigned int i = 0; i <= N; i++ ) {
-      const real prob_of_i = likeln( N, i, p );
+      const breal prob_of_i = likeln( N, i, p );
       for ( unsigned int j = 0; j <= M; j++ ) {
 	if ( test_result.at( i ).at( j ) ) {
-	  const real prob_of_j = likeln( M, j, p );
+	  const breal prob_of_j = likeln( M, j, p );
 	  false_positive_probability += exp( prob_of_i + prob_of_j );
 	}
       }

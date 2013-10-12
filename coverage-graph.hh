@@ -8,7 +8,7 @@
 class CoverageGraph
 {
  public:
-  static real coverage_probability( const real p, const IntervalCollection & limits );
+  static breal coverage_probability( const breal p, const IntervalCollection & limits );
 };
 
 #endif
