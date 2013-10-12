@@ -54,13 +54,14 @@ class BarnardFast : public Barnard
 {
 private:
   const unsigned int _p_slots;
-  std::vector< std::vector< float > > _ppv_cache;
+  std::vector< std::vector< bool > > _ppv_cache;
 
 public:
   BarnardFast( const unsigned int s_M,
 	       const unsigned int s_N,
 	       const real s_gamma,
-	       const real s_slots );
+	       const real s_slots,
+	       const real alpha );
 
   real particular_p_value( const unsigned int count, const real pi ) const
   {

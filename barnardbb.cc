@@ -102,10 +102,11 @@ real Barnard::particular_p_value( const unsigned int count, const real pi ) cons
 BarnardFast::BarnardFast( const unsigned int s_M,
 			  const unsigned int s_N,
 			  const real s_gamma,
-			  const real s_slots )
+			  const real s_slots,
+			  const real alpha )
   : Barnard( s_M, s_N, s_gamma ),
     _p_slots( s_slots ),
-    _ppv_cache( (_M + 1) * (_N + 1) + 1, std::vector< float >( _p_slots + 1, -1 ) )
+    _ppv_cache( (_M + 1) * (_N + 1) + 1, std::vector< bool >( _p_slots + 1, -1 ) )
 {
   /* make the cache in fast order */
   for ( unsigned int pslot = 0; pslot <= _p_slots; pslot++ ) {
@@ -113,7 +114,7 @@ BarnardFast::BarnardFast( const unsigned int s_M,
     _ppv_cache.at( 0 ).at( pslot ) = cumulative_probability;
     for ( unsigned int count = 1; count <= outcomes.size(); count++ ) {
       cumulative_probability += std::exp( outcomes.at( count - 1 ).likeln( real( pslot ) / real( _p_slots ) ) );
-      _ppv_cache.at( count ).at( pslot ) = cumulative_probability;
+      _ppv_cache.at( count ).at( pslot ) = cumulative_probability >= alpha;
     }
   }
 }

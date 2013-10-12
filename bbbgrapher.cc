@@ -21,19 +21,18 @@ int main( int argc, char *argv[] )
 
   cerr << "Calculating Barnard (Berger-Boos) test for " << N << "x" << M << " outcomes... ";
 
-  BarnardFast bbb( N, M, berger_boos_gamma, p_quantizer_steps );
+  BarnardFast bbb( N, M, berger_boos_gamma, p_quantizer_steps, alpha );
   vector< vector< bool > > test_result( N + 1, vector< bool >( M + 1 ) );
 
   for ( unsigned int i = 0; i <= N; i++ ) {
     for ( unsigned int j = 0; j <= M; j++ ) {
-      test_result.at( i ).at( j ) = ( bbb.p_value( i, j ) < alpha );
+      test_result.at( i ).at( j ) = bbb.p_value( i, j ) < alpha;
     }
   }
 
   cerr << "done." << endl << "Printing curve of false positive probabilities... ";
 
-  for ( unsigned int pint = 1; pint < p_quantizer_steps; pint++ ) {
-    const real p = real( pint ) / real( p_quantizer_steps );
+  for ( real p = 0.0; p <= 1.0; p += 1.0 / p_quantizer_steps ) {
     real false_positive_probability = 0.0;
 
     for ( unsigned int i = 0; i <= N; i++ ) {
@@ -41,7 +40,7 @@ int main( int argc, char *argv[] )
       for ( unsigned int j = 0; j <= M; j++ ) {
 	if ( test_result.at( i ).at( j ) ) {
 	  const real prob_of_j = likeln( M, j, p );
-	  false_positive_probability += prob_of_i * prob_of_j;
+	  false_positive_probability += exp( prob_of_i + prob_of_j );
 	}
       }
     }
