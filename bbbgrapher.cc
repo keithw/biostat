@@ -35,11 +35,13 @@ int main( int argc, char *argv[] )
   for ( breal p = 0.0; p <= 1.0; p += 1.0 / p_quantizer_steps ) {
     breal false_positive_probability = 0.0;
 
+    const breal log_p = log( p ), log_oneminusp = log( 1 - p );
+
     for ( unsigned int i = 0; i <= N; i++ ) {
-      const breal prob_of_i = likeln( N, i, p );
+      const breal prob_of_i = bicoln( N, i ) + i * log_p + (N - i) * log_oneminusp;
       for ( unsigned int j = 0; j <= M; j++ ) {
 	if ( test_result.at( i ).at( j ) ) {
-	  const breal prob_of_j = likeln( M, j, p );
+	  const breal prob_of_j = bicoln( M, j ) + j * log_p + (M - j) * log_oneminusp;
 	  false_positive_probability += exp( prob_of_i + prob_of_j );
 	}
       }
