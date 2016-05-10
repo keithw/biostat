@@ -1,5 +1,6 @@
 #include <boost/math/special_functions/gamma.hpp>
 #include <vector>
+#include <iostream>
 
 #include "util.hh"
 
