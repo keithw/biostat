@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cassert>
+#include <cmath>
 
 #include "blyth-still-casella.hh"
 #include "binary-search.hh"
